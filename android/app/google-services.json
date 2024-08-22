@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "377468499312",
+    "project_id": "gents-tailor-001",
+    "storage_bucket": "gents-tailor-001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377468499312:android:ae5bc695dc6ed474e50bb5",
+        "android_client_info": {
+          "package_name": "com.example.Gents_Trailer_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADDrYgSMQB6jYn5c7tj7UmHQwfIawkZVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
