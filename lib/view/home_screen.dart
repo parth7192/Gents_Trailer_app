@@ -10,14 +10,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Get.toNamed('/second');
-          },
-          child: const Text('Go to Second Page'),
-        ),
-      ),
+      body: Container(),
     );
   }
 }
