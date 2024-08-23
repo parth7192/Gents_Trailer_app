@@ -20,12 +20,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(),
       title: 'Gents Tailor',
       home: const AuthScreen(), // Set the initial screen
       getPages: [
         GetPage(
           name: '/',
-          page: () => const MyHomePage(),
+          page: () => const HomePageScreen(),
         ),
         GetPage(
           name: '/',
