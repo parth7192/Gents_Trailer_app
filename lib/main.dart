@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gents_trailer/firebase_options.dart';
@@ -19,20 +20,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      title: 'Gents Tailor',
-      home: const AuthScreen(), // Set the initial screen
-      getPages: [
-        GetPage(
-          name: '/',
-          page: () => const HomePageScreen(),
-        ),
-        GetPage(
-          name: '/',
-          page: () => const AuthScreen(),
-        ),
-      ],
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(),
+        title: 'Gents Tailor',
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasData) {
+              return const HomePageScreen();
+            }
+            return const AuthScreen();
+          },
+        ));
   }
 }

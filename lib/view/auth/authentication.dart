@@ -31,68 +31,56 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       _tailorController.isAuthentication.value = true;
       if (_tailorController.isLogin.value) {
+        // For login
         final userCredentials = await _firebase.signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
-        print(userCredentials);
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        print("Login successful: ${userCredentials.user?.email}");
+        // Navigate to Home Screen
+        Get.to(() => const HomePageScreen());
       } else {
-        final userCredentials = await _firebase
-            .createUserWithEmailAndPassword(
-                email: emailController.text, password: passwordController.text)
-            .then((value) => const HomePageScreen());
-        print(userCredentials);
-        FirebaseFirestore.instance.collection("users").add({
+        // For signup
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        // Store additional user info
+        await FirebaseFirestore.instance.collection("users").add({
           'email': emailController.text,
           'UserName': usernameController.text,
         });
+        print("Signup successful: ${userCredentials.user?.email}");
+        // Navigate to Home Screen
+        Get.to(() => const HomePageScreen());
       }
     } on FirebaseAuthException catch (error) {
+      // Error handling as before
       if (_tailorController.isLogin.value) {
         if (error.code == 'user-not-found') {
-          // Show SnackBar for user not found
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("No account found with this email."),
-            ),
-          );
+          _showErrorSnackBar(context, "No account found with this email.");
         } else if (error.code == 'wrong-password') {
-          // Show SnackBar for wrong password
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Wrong password. Please check your credentials."),
-            ),
-          );
+          _showErrorSnackBar(
+              context, "Wrong password. Please check your credentials.");
         } else {
-          // Show generic error message for login failure
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Login failed. Please try again."),
-            ),
-          );
+          _showErrorSnackBar(context, "Login failed. Please try again.");
         }
       } else {
         if (error.code == 'email-already-in-use') {
-          // Show SnackBar for email already in use
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Email already in use. Please try another email."),
-            ),
-          );
+          _showErrorSnackBar(
+              context, "Email already in use. Please try another email.");
         } else {
-          // Show generic error message for signup failure
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Signup failed. Please try again."),
-            ),
-          );
+          _showErrorSnackBar(context, "Signup failed. Please try again.");
         }
       }
       _tailorController.isAuthentication.value = false;
     }
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
