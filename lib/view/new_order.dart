@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gents_trailer/constant/constant.dart';
 
-class Widgets extends StatefulWidget {
-  Widgets({super.key});
+class NewOrder extends StatefulWidget {
+  NewOrder({super.key});
 
   TextEditingController plengthController = TextEditingController();
   TextEditingController kamarController = TextEditingController();
@@ -20,10 +20,10 @@ class Widgets extends StatefulWidget {
   TextEditingController cupController = TextEditingController();
 
   @override
-  State<Widgets> createState() => _WidgetsState();
+  State<NewOrder> createState() => _NewOrderState();
 }
 
-class _WidgetsState extends State<Widgets> {
+class _NewOrderState extends State<NewOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,19 +49,19 @@ class _WidgetsState extends State<Widgets> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        MyTextField(widget.plengthController, lambay),
+                        myTextField(widget.plengthController, lambay),
                         const SizedBox(height: 10),
-                        MyTextField(widget.kamarController, kamar),
+                        myTextField(widget.kamarController, kamar),
                         const SizedBox(height: 10),
-                        MyTextField(widget.seatController, seat),
+                        myTextField(widget.seatController, seat),
                         const SizedBox(height: 10),
-                        MyTextField(widget.jangController, jang),
+                        myTextField(widget.jangController, jang),
                         const SizedBox(height: 10),
-                        MyTextField(widget.ghutanController, ghutun),
+                        myTextField(widget.ghutanController, ghutun),
                         const SizedBox(height: 10),
-                        MyTextField(widget.joloController, jolo),
+                        myTextField(widget.joloController, jolo),
                         const SizedBox(height: 10),
-                        MyTextField(widget.moliController, moli),
+                        myTextField(widget.moliController, moli),
                       ],
                     ),
                   ),
@@ -84,19 +84,19 @@ class _WidgetsState extends State<Widgets> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        MyTextField(widget.slengthController, lambay),
+                        myTextField(widget.slengthController, lambay),
                         const SizedBox(height: 10),
-                        MyTextField(widget.frontController, front),
+                        myTextField(widget.frontController, front),
                         const SizedBox(height: 10),
-                        MyTextField(widget.chhatiController, chhati),
+                        myTextField(widget.chhatiController, chhati),
                         const SizedBox(height: 10),
-                        MyTextField(widget.solderController, soldar),
+                        myTextField(widget.solderController, soldar),
                         const SizedBox(height: 10),
-                        MyTextField(widget.bayController, bay),
+                        myTextField(widget.bayController, bay),
                         const SizedBox(height: 10),
-                        MyTextField(widget.kolarController, kolar),
+                        myTextField(widget.kolarController, kolar),
                         const SizedBox(height: 10),
-                        MyTextField(widget.cupController, cup),
+                        myTextField(widget.cupController, cup),
                       ],
                     ),
                   ),
@@ -131,17 +131,17 @@ class _WidgetsState extends State<Widgets> {
     );
   }
 
-  Widget MyTextField(TextEditingController Controller, String Text) {
+  Widget myTextField(TextEditingController controller, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: TextFormField(
-        controller: Controller,
+        controller: controller,
         decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide.none,
             ),
-            hintText: Text,
+            hintText: text,
             hintStyle: const TextStyle(color: Colors.white),
             filled: true,
             fillColor: Colors.grey),
