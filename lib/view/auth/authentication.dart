@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gents_trailer/constant/constant.dart';
 import 'package:gents_trailer/getx/getx.dart';
 import 'package:gents_trailer/view/home_screen.dart';
 import 'package:get/get.dart';
@@ -36,7 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
           email: emailController.text,
           password: passwordController.text,
         );
-        print("Login successful: ${userCredentials.user?.email}");
+        print("$loginSuccessful: ${userCredentials.user?.email}");
         // Navigate to Home Screen
         Get.to(() => const HomePageScreen());
       } else {
@@ -50,27 +51,25 @@ class _AuthScreenState extends State<AuthScreen> {
           'email': emailController.text,
           'UserName': usernameController.text,
         });
-        print("Signup successful: ${userCredentials.user?.email}");
+        print("$signupSuccessful: ${userCredentials.user?.email}");
         // Navigate to Home Screen
         Get.to(() => const HomePageScreen());
       }
     } on FirebaseAuthException catch (error) {
-      // Error handling as before
+      // Error handling
       if (_tailorController.isLogin.value) {
         if (error.code == 'user-not-found') {
-          _showErrorSnackBar(context, "No account found with this email.");
+          _showErrorSnackBar(context, noAccountFound);
         } else if (error.code == 'wrong-password') {
-          _showErrorSnackBar(
-              context, "Wrong password. Please check your credentials.");
+          _showErrorSnackBar(context, wrongPassword);
         } else {
-          _showErrorSnackBar(context, "Login failed. Please try again.");
+          _showErrorSnackBar(context, loginFailed);
         }
       } else {
         if (error.code == 'email-already-in-use') {
-          _showErrorSnackBar(
-              context, "Email already in use. Please try another email.");
+          _showErrorSnackBar(context, emailInUse);
         } else {
-          _showErrorSnackBar(context, "Signup failed. Please try again.");
+          _showErrorSnackBar(context, signupFailed);
         }
       }
       _tailorController.isAuthentication.value = false;
@@ -79,8 +78,11 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _showErrorSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   @override

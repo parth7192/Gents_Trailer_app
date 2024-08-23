@@ -1,3 +1,20 @@
-class Constant {
-
-}
+String lambay = "લંબાઈ"; // Length
+String kamar = "કમર"; // Waist
+String seat = "સીટ"; // Seat
+String jang = "જાંગ"; // Thigh
+String ghutun = "ઘૂંટણ"; // Knee
+String jolo = "જોળો"; // Calf
+String moli = "મોળી"; // Ankle
+String front = "ફ્રન્ટ"; // Front
+String chhati = "છાતી"; // Chest
+String soldar = "સોલ્ડર"; // Shoulder
+String bay = "બાય"; // Bicep
+String kolar = "કોલર"; // Collar
+String cup = "કપ"; // Cup
+String signupFailed = "Signup failed. Please try again.";
+String emailInUse = "Email already in use. Please try another email.";
+String loginFailed = "Login failed. Please try again.";
+String wrongPassword = "Wrong password. Please check your credentials.";
+String noAccountFound = "No account found with this email.";
+String signupSuccessful = "Signup successful.";
+String loginSuccessful = "Login successful.";
