@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gents_trailer/constant/constant.dart';
+import 'package:gents_trailer/constant/authentication_variable.dart';
+import 'package:gents_trailer/constant/constant_controller.dart';
+import 'package:gents_trailer/constant/constant_string.dart';
 import 'package:gents_trailer/getx/getx.dart';
 import 'package:gents_trailer/view/home_screen.dart';
 import 'package:get/get.dart';
@@ -14,12 +16,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   final TailorController _tailorController = Get.put(TailorController());
   final _form = GlobalKey<FormState>();
-  final FirebaseAuth _firebase = FirebaseAuth.instance;
 
   void _submit() async {
     final isValid = _form.currentState!.validate();
@@ -33,7 +31,8 @@ class _AuthScreenState extends State<AuthScreen> {
       _tailorController.isAuthentication.value = true;
       if (_tailorController.isLogin.value) {
         // For login
-        final userCredentials = await _firebase.signInWithEmailAndPassword(
+        final userCredentials =
+            await AuthenticationVar.firebase.signInWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
@@ -42,7 +41,8 @@ class _AuthScreenState extends State<AuthScreen> {
         Get.to(() => const HomePageScreen());
       } else {
         // For signup
-        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+        final userCredentials =
+            await AuthenticationVar.firebase.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
@@ -142,6 +142,16 @@ class _AuthScreenState extends State<AuthScreen> {
                                   borderSide: BorderSide.none,
                                 ),
                               ),
+                              validator: (value) {
+                                if (value == null ||
+                                    value.trim().isEmpty ||
+                                    value.length < 4) {
+                                  return 'Name must be at least 4 characters long.';
+                                }
+                              },
+                              onSaved: (value) {
+                                usernameController.text = value!;
+                              },
                             ),
                           );
                         } else {
@@ -162,6 +172,16 @@ class _AuthScreenState extends State<AuthScreen> {
                               borderSide: BorderSide.none,
                             ),
                           ),
+                          validator: (value) {
+                            if (value == null ||
+                                value.trim().isEmpty ||
+                                !value.contains("@gmail.com")) {
+                              return 'Invalid Email';
+                            }
+                          },
+                          onSaved: (value) {
+                            emailController.text = value!;
+                          },
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -188,6 +208,14 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'Name must be at least 4 characters long.';
+                              }
+                            },
+                            onSaved: (value) {
+                              usernameController.text = value!;
+                            },
                           );
                         }),
                       ),
@@ -216,7 +244,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               () => ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      MaterialStateProperty.all(Colors.black),
+                                      WidgetStateProperty.all(Colors.black),
                                 ),
                                 onPressed: () {
                                   _submit();
