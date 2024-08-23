@@ -1,6 +1,7 @@
-import 'package:gents_trailer/constant/authentication_variable.dart';
-import 'package:gents_trailer/model/firebase_model.dart';
 import 'package:get/get.dart';
+
+import '../constant/authentication_variable.dart';
+import '../model/firebase_model.dart';
 
 class TailorController extends GetxController {
   RxBool isVisible = false.obs;
@@ -16,19 +17,20 @@ class TailorController extends GetxController {
     filteredOrders = <FirebaseModel>[].obs;
     fetchOrders();
   }
-
   void fetchOrders() {
     AuthenticationVar.firestore
         .collection('orders')
-        .where('userId', isEqualTo: AuthenticationVar.firebase.currentUser?.uid)
         .snapshots()
         .listen((snapshot) {
       registeredOrder.assignAll(snapshot.docs
-          .map((doc) => FirebaseModel.fromFirestore(doc))
-          .toList());
+          .map((doc) {
+        print("Fetched Order: ${doc.data()}"); // Add this to see fetched data
+        return FirebaseModel.fromFirestore(doc);
+      }).toList());
       filteredOrders.assignAll(registeredOrder);
     });
   }
+
 
   void addOrder(FirebaseModel order) {
     registeredOrder.add(order);

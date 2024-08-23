@@ -15,22 +15,59 @@ class NewOrder extends StatefulWidget {
 }
 
 class _NewOrderState extends State<NewOrder> {
-  final plength1 = double.tryParse(plengthController.text) ?? 0.0;
-  final kamar1 = double.tryParse(kamarController.text) ?? 0.0;
-  final seat1 = double.tryParse(seatController.text) ?? 0.0;
-  final jang1 = double.tryParse(jangController.text) ?? 0.0;
-  final ghutan1 = double.tryParse(ghutanController.text) ?? 0.0;
-  final jolo1 = double.tryParse(joloController.text) ?? 0.0;
-  final moli1 = double.tryParse(moliController.text) ?? 0.0;
-  final slength1 = double.tryParse(slengthController.text) ?? 0.0;
-  final front1 = double.tryParse(frontController.text) ?? 0.0;
-  final chhati1 = double.tryParse(chhatiController.text) ?? 0.0;
-  final solder1 = double.tryParse(solderController.text) ?? 0.0;
-  final bay1 = double.tryParse(bayController.text) ?? 0.0;
-  final kolar1 = double.tryParse(kolarController.text) ?? 0.0;
-  final cup1 = double.tryParse(cupController.text) ?? 0.0;
+  final plengthFocusNode = FocusNode();
+  final kamarFocusNode = FocusNode();
+  final seatFocusNode = FocusNode();
+  final jangFocusNode = FocusNode();
+  final ghutanFocusNode = FocusNode();
+  final joloFocusNode = FocusNode();
+  final moliFocusNode = FocusNode();
+  final slengthFocusNode = FocusNode();
+  final frontFocusNode = FocusNode();
+  final chhatiFocusNode = FocusNode();
+  final solderFocusNode = FocusNode();
+  final bayFocusNode = FocusNode();
+  final kolarFocusNode = FocusNode();
+  final cupFocusNode = FocusNode();
+
+  // Dispose of focus nodes to avoid memory leaks
+  @override
+  void dispose() {
+    plengthFocusNode.dispose();
+    kamarFocusNode.dispose();
+    seatFocusNode.dispose();
+    jangFocusNode.dispose();
+    ghutanFocusNode.dispose();
+    joloFocusNode.dispose();
+    moliFocusNode.dispose();
+    slengthFocusNode.dispose();
+    frontFocusNode.dispose();
+    chhatiFocusNode.dispose();
+    solderFocusNode.dispose();
+    bayFocusNode.dispose();
+    kolarFocusNode.dispose();
+    cupFocusNode.dispose();
+    super.dispose();
+  }
 
   void _submitData() {
+    // Parse the values from the controllers at the time of submission
+    final plength1 = double.tryParse(plengthController.text) ?? 0.0;
+    final kamar1 = double.tryParse(kamarController.text) ?? 0.0;
+    final seat1 = double.tryParse(seatController.text) ?? 0.0;
+    final jang1 = double.tryParse(jangController.text) ?? 0.0;
+    final ghutan1 = double.tryParse(ghutanController.text) ?? 0.0;
+    final jolo1 = double.tryParse(joloController.text) ?? 0.0;
+    final moli1 = double.tryParse(moliController.text) ?? 0.0;
+    final slength1 = double.tryParse(slengthController.text) ?? 0.0;
+    final front1 = double.tryParse(frontController.text) ?? 0.0;
+    final chhati1 = double.tryParse(chhatiController.text) ?? 0.0;
+    final solder1 = double.tryParse(solderController.text) ?? 0.0;
+    final bay1 = double.tryParse(bayController.text) ?? 0.0;
+    final kolar1 = double.tryParse(kolarController.text) ?? 0.0;
+    final cup1 = double.tryParse(cupController.text) ?? 0.0;
+
+    // Check if any field is empty
     if (plengthController.text.isEmpty ||
         kamarController.text.isEmpty ||
         seatController.text.isEmpty ||
@@ -50,6 +87,8 @@ class _NewOrderState extends State<NewOrder> {
       );
       return;
     }
+
+    // Pass the order back to the parent widget
     widget.onAddOrder(FirebaseModel(
         plength: plength1,
         front: front1,
@@ -69,10 +108,28 @@ class _NewOrderState extends State<NewOrder> {
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Order saved successfully')));
 
+    // Clear the text fields after saving the order
+    plengthController.clear();
+    kamarController.clear();
+    seatController.clear();
+    jangController.clear();
+    ghutanController.clear();
+    joloController.clear();
+    moliController.clear();
+    slengthController.clear();
+    frontController.clear();
+    chhatiController.clear();
+    solderController.clear();
+    bayController.clear();
+    kolarController.clear();
+    cupController.clear();
+
     Navigator.pop(context);
+
     final currentUser = AuthenticationVar.firebase.currentUser;
     if (currentUser != null) {
       try {
+        // Use `set()` with a specific document ID for the current user, so it replaces the order if it already exists
         AuthenticationVar.firestore.collection('orders').add({
           'userId': currentUser.uid,
           'plength': plength1,
@@ -98,6 +155,7 @@ class _NewOrderState extends State<NewOrder> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,27 +173,50 @@ class _NewOrderState extends State<NewOrder> {
                 ),
               ),
               Container(
-                height: 435,
+                height: 250,
                 width: 400,
                 color: Colors.white,
                 child: Form(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
-                        myTextField(plengthController, lambay),
-                        const SizedBox(height: 10),
-                        myTextField(kamarController, kamar),
-                        const SizedBox(height: 10),
-                        myTextField(seatController, seat),
-                        const SizedBox(height: 10),
-                        myTextField(jangController, jang),
-                        const SizedBox(height: 10),
-                        myTextField(ghutanController, ghutun),
-                        const SizedBox(height: 10),
-                        myTextField(joloController, jolo),
-                        const SizedBox(height: 10),
-                        myTextField(moliController, moli),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: myTextField(plengthController, lambay,
+                                  plengthFocusNode, kamarFocusNode),
+                            ),
+                            Expanded(
+                              child: myTextField(kamarController, kamar,
+                                  kamarFocusNode, seatFocusNode),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: myTextField(joloController, jolo,
+                                  seatFocusNode, jangFocusNode),
+                            ),
+                            Expanded(
+                              child: myTextField(seatController, seat,
+                                  jangFocusNode, ghutanFocusNode),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: myTextField(jangController, jang,
+                                  ghutanFocusNode, joloFocusNode),
+                            ),
+                            Expanded(
+                              child: myTextField(ghutanController, ghutun,
+                                  joloFocusNode, moliFocusNode),
+                            ),
+                          ],
+                        ),
+                        myTextField(moliController, moli, moliFocusNode, null),
                       ],
                     ),
                   ),
@@ -150,27 +231,50 @@ class _NewOrderState extends State<NewOrder> {
                 ),
               ),
               Container(
-                height: 435,
+                height: 250,
                 width: 400,
                 color: Colors.white,
                 child: Form(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
-                        myTextField(slengthController, lambay),
-                        const SizedBox(height: 10),
-                        myTextField(frontController, front),
-                        const SizedBox(height: 10),
-                        myTextField(chhatiController, chhati),
-                        const SizedBox(height: 10),
-                        myTextField(solderController, soldar),
-                        const SizedBox(height: 10),
-                        myTextField(bayController, bay),
-                        const SizedBox(height: 10),
-                        myTextField(kolarController, kolar),
-                        const SizedBox(height: 10),
-                        myTextField(cupController, cup),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: myTextField(slengthController, lambay,
+                                  slengthFocusNode, frontFocusNode),
+                            ),
+                            Expanded(
+                              child: myTextField(frontController, front,
+                                  frontFocusNode, chhatiFocusNode),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: myTextField(chhatiController, chhati,
+                                  chhatiFocusNode, solderFocusNode),
+                            ),
+                            Expanded(
+                              child: myTextField(solderController, soldar,
+                                  solderFocusNode, bayFocusNode),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: myTextField(bayController, bay,
+                                  bayFocusNode, kolarFocusNode),
+                            ),
+                            Expanded(
+                              child: myTextField(kolarController, kolar,
+                                  kolarFocusNode, cupFocusNode),
+                            ),
+                          ],
+                        ),
+                        myTextField(cupController, cup, cupFocusNode, null),
                       ],
                     ),
                   ),
@@ -205,22 +309,26 @@ class _NewOrderState extends State<NewOrder> {
     );
   }
 
-  Widget myTextField(TextEditingController controller, String text) {
+  Widget myTextField(TextEditingController controller, String label,
+      FocusNode currentFocus, FocusNode? nextFocus) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: TextFormField(
+      child: TextField(
+        autofocus: true,
         controller: controller,
+        focusNode: currentFocus,
+        // Set the focus node
         keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide.none,
-            ),
-            hintText: text,
-            hintStyle: const TextStyle(color: Colors.white),
-            filled: true,
-            fillColor: Colors.grey),
-        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(labelText: label),
+        onSubmitted: (value) {
+          if (nextFocus != null) {
+            // Shift focus to the next field
+            FocusScope.of(context).requestFocus(nextFocus);
+          } else {
+            // Close the keyboard if there is no next focus
+            FocusScope.of(context).unfocus();
+          }
+        },
       ),
     );
   }
