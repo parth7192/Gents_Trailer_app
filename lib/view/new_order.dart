@@ -53,25 +53,27 @@ class _NewOrderState extends State<NewOrder> {
   //   mobileFocusNode.dispose();
   //   super.dispose();
   // }
-  DateTime? _selectedDate;
-  final formatter = DateFormat('d/M/yyyy');
+  // DateTime? _selectedDate;
+  // final formatter = DateFormat('d/M/yyyy');
 
-  void _presentDatePicker() async {
-    final now = DateTime.now();
-    final pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now,
-      lastDate: DateTime(2050),
-    );
-    setState(() {
-      _selectedDate = pickedDate;
-    });
-  }
+  // void _presentDatePicker() async {
+  //   final now = DateTime.now();
+  //   final pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: now,
+  //     firstDate: now,
+  //     lastDate: DateTime(2050),
+  //   );
+  //   setState(() {
+  //     _selectedDate = pickedDate;
+  //   });
+  // }
 
   void _submitData() async {
     final plength1 = double.tryParse(plengthController.text) ?? 0.0;
     final kamar1 = double.tryParse(kamarController.text) ?? 0.0;
+    final koni = double.tryParse(koniController.text) ?? 0.0;
+    final pindi = double.tryParse(pindiController.text) ?? 0.0;
     final seat1 = double.tryParse(seatController.text) ?? 0.0;
     final jang1 = double.tryParse(jangController.text) ?? 0.0;
     final ghutan1 = double.tryParse(ghutanController.text) ?? 0.0;
@@ -89,12 +91,13 @@ class _NewOrderState extends State<NewOrder> {
     final billNo = billNoController.text;
 
     // Check if any field is empty
-    if (_selectedDate == null ||
-        plengthController.text.isEmpty ||
+    if (plengthController.text.isEmpty ||
         name.isEmpty ||
         mobileNo.isEmpty ||
         billNo.isEmpty ||
         kamarController.text.isEmpty ||
+        koniController.text.isEmpty ||
+        pindiController.text.isEmpty ||
         seatController.text.isEmpty ||
         jangController.text.isEmpty ||
         ghutanController.text.isEmpty ||
@@ -138,7 +141,7 @@ class _NewOrderState extends State<NewOrder> {
             .doc(currentUser.email)
             .collection('orders')
             .add({
-          'deliveryDate': _selectedDate,
+          // 'deliveryDate': _selectedDate,
           'name': name,
           'mobileNo': mobileNo,
           'billNo': billNo,
@@ -148,6 +151,8 @@ class _NewOrderState extends State<NewOrder> {
           'jang': jang1,
           'ghutan': ghutan1,
           'jolo': jolo1,
+          'koni': koni,
+          'pindi': pindi,
           'moli': moli1,
           'slength': slength1,
           'front': front1,
@@ -173,6 +178,8 @@ class _NewOrderState extends State<NewOrder> {
         slengthController.clear();
         frontController.clear();
         chhatiController.clear();
+        koniController.clear();
+        pindiController.clear();
         solderController.clear();
         bayController.clear();
         kolarController.clear();
@@ -188,9 +195,6 @@ class _NewOrderState extends State<NewOrder> {
         );
       }
     }
-    setState(() {
-      _selectedDate = null;
-    });
   }
 
   @override
@@ -302,11 +306,11 @@ class _NewOrderState extends State<NewOrder> {
           children: [
             Expanded(
               child: myTextField(
-                  joloController, jolo, seatFocusNode, jangFocusNode),
+                  seatController, seat, seatFocusNode, jangFocusNode),
             ),
             Expanded(
               child: myTextField(
-                  seatController, seat, jangFocusNode, ghutanFocusNode),
+                  jangController, jang, jangFocusNode, ghutanFocusNode),
             ),
           ],
         ),
@@ -314,15 +318,25 @@ class _NewOrderState extends State<NewOrder> {
           children: [
             Expanded(
               child: myTextField(
-                  jangController, jang, ghutanFocusNode, joloFocusNode),
+                  ghutanController, ghutun, ghutanFocusNode, pindiFocusNode),
             ),
             Expanded(
               child: myTextField(
-                  ghutanController, ghutun, joloFocusNode, moliFocusNode),
+                  pindiController, pindi, pindiFocusNode, joloFocusNode),
             ),
           ],
         ),
-        myTextField(moliController, moli, moliFocusNode, null),
+        Row(
+          children: [
+            Expanded(
+              child: myTextField(
+                  joloController, jolo, joloFocusNode, moliFocusNode),
+            ),
+            Expanded(
+              child: myTextField(moliController, moli, moliFocusNode, null),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -358,15 +372,25 @@ class _NewOrderState extends State<NewOrder> {
           children: [
             Expanded(
               child:
-                  myTextField(bayController, bay, bayFocusNode, kolarFocusNode),
+                  myTextField(bayController, bay, bayFocusNode, koniFocusNode),
             ),
+            Expanded(
+              child: myTextField(
+                  koniController, koni, koniFocusNode, kolarFocusNode),
+            ),
+          ],
+        ),
+        Row(
+          children: [
             Expanded(
               child: myTextField(
                   kolarController, kolar, kolarFocusNode, cupFocusNode),
             ),
+            Expanded(
+              child: myTextField(cupController, cup, cupFocusNode, null),
+            ),
           ],
         ),
-        myTextField(cupController, cup, cupFocusNode, null),
       ],
     );
   }
@@ -433,37 +457,37 @@ class _NewOrderState extends State<NewOrder> {
             ),
           ],
         ),
-        Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: _presentDatePicker,
-                child: AbsorbPointer(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: _selectedDate == null
-                          ? 'Select Delivery Date'
-                          : formatter.format(_selectedDate!),
-                      labelStyle: const TextStyle(color: Colors.black),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(color: Colors.teal),
-                      ),
-                      suffixIcon:
-                          const Icon(Icons.calendar_today, color: Colors.teal),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: GestureDetector(
+        //         onTap: _presentDatePicker,
+        //         child: AbsorbPointer(
+        //           child: TextField(
+        //             decoration: InputDecoration(
+        //               labelText: _selectedDate == null
+        //                   ? 'Select Delivery Date'
+        //                   : formatter.format(_selectedDate!),
+        //               labelStyle: const TextStyle(color: Colors.black),
+        //               filled: true,
+        //               fillColor: Colors.grey[100],
+        //               border: OutlineInputBorder(
+        //                 borderRadius: BorderRadius.circular(15),
+        //                 borderSide: BorderSide.none,
+        //               ),
+        //               focusedBorder: OutlineInputBorder(
+        //                 borderRadius: BorderRadius.circular(15),
+        //                 borderSide: const BorderSide(color: Colors.teal),
+        //               ),
+        //               suffixIcon:
+        //                   const Icon(Icons.calendar_today, color: Colors.teal),
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }

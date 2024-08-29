@@ -1,10 +1,11 @@
-
 String lambay = "લંબાઈ"; // Length
 String kamar = "કમર"; // Waist
 String seat = "સીટ"; // Seat
 String jang = "જાંગ"; // Thigh
 String ghutun = "ઘૂંટણ"; // Knee
 String jolo = "જોળો"; // Calf
+String pindi = "પીંડી";
+String koni = "કોણી";
 String moli = "મોળી"; // Ankle
 String front = "ફ્રન્ટ"; // Front
 String chhati = "છાતી"; // Chest

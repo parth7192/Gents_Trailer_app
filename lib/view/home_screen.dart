@@ -3,7 +3,7 @@ import 'package:gents_trailer/widget/custome_card.dart';
 import 'package:get/get.dart';
 import '../constant/authentication_variable.dart';
 import '../getx/getx.dart';
-import 'auth/authentication.dart';
+import 'auth/login_screen.dart';
 import 'new_order.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -12,7 +12,6 @@ class HomePageScreen extends StatefulWidget {
   @override
   State<HomePageScreen> createState() => _HomePageScreenState();
 }
-
 
 class _HomePageScreenState extends State<HomePageScreen> {
   void logout() {

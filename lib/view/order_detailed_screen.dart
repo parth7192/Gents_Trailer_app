@@ -112,6 +112,12 @@ class OrderDetailsScreen extends StatelessWidget {
                   ),
                   TableRow(
                     children: [
+                      tableHeader("કોણી"),
+                      tableCell(model.koni.toString()),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
                       tableHeader("કોલર"),
                       tableCell(model.kolar.toString()),
                     ],
@@ -175,6 +181,12 @@ class OrderDetailsScreen extends StatelessWidget {
                   TableRow(
                     children: [
                       tableHeader("ઘૂંટણ"),
+                      tableCell(model.ghutan.toString()),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      tableHeader("પીંડી"),
                       tableCell(model.ghutan.toString()),
                     ],
                   ),
