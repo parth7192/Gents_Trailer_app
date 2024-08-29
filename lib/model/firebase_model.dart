@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseModel {
+  String? name;
+  String? mobileNo;
+  String? billNo;
+  String? id;
   double? plength;
   double? front;
   double? chhati;
@@ -17,6 +21,10 @@ class FirebaseModel {
   double? cup;
 
   FirebaseModel({
+    this.id,
+    required this.name,
+    required this.mobileNo,
+    required this.billNo,
     required this.plength,
     required this.front,
     required this.chhati,
@@ -36,6 +44,10 @@ class FirebaseModel {
   factory FirebaseModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return FirebaseModel(
+      id: doc.id,
+      name: data['name'],
+      billNo: data['billNo'],
+      mobileNo: data['mobileNo'],
       plength: (data['plength'] ?? 0).toDouble(),
       front: (data['front'] ?? 0).toDouble(),
       chhati: (data['chhati'] ?? 0).toDouble(),
@@ -51,5 +63,27 @@ class FirebaseModel {
       kolar: (data['kolar'] ?? 0).toDouble(),
       cup: (data['cup'] ?? 0).toDouble(),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'mobileNo': mobileNo,
+      'billNo': billNo,
+      'plength': plength,
+      'front': front,
+      'chhati': chhati,
+      'seat': seat,
+      'jang': jang,
+      'ghutan': ghutan,
+      'jolo': jolo,
+      'moli': moli,
+      'kamar': kamar,
+      'slength': slength,
+      'solder': solder,
+      'bay': bay,
+      'kolar': kolar,
+      'cup': cup
+    };
   }
 }

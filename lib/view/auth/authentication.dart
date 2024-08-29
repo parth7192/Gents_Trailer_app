@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gents_trailer/constant/authentication_variable.dart';
-import 'package:gents_trailer/constant/constant_controller.dart';
-import 'package:gents_trailer/constant/constant_string.dart';
-import 'package:gents_trailer/getx/getx.dart';
-import 'package:gents_trailer/view/home_screen.dart';
 import 'package:get/get.dart';
+
+import '../../constant/authentication_variable.dart';
+import '../../constant/constant_controller.dart';
+import '../../constant/constant_string.dart';
+import '../../getx/getx.dart';
+import '../home_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -32,17 +33,17 @@ class _AuthScreenState extends State<AuthScreen> {
       if (_tailorController.isLogin.value) {
         // For login
         final userCredentials =
-            await AuthenticationVar.firebase.signInWithEmailAndPassword(
+        await AuthenticationVar.firebase.signInWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
         print("$loginSuccessful: ${userCredentials.user?.email}");
         // Navigate to Home Screen
-        Get.to(() => const HomePageScreen());
+        Get.offAll(() => const HomePageScreen());
       } else {
         // For signup
         final userCredentials =
-            await AuthenticationVar.firebase.createUserWithEmailAndPassword(
+        await AuthenticationVar.firebase.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
@@ -53,7 +54,7 @@ class _AuthScreenState extends State<AuthScreen> {
         });
         print("$signupSuccessful: ${userCredentials.user?.email}");
         // Navigate to Home Screen
-        Get.to(() => const HomePageScreen());
+        Get.offAll(() => const HomePageScreen());
       }
     } on FirebaseAuthException catch (error) {
       // Error handling
@@ -81,6 +82,7 @@ class _AuthScreenState extends State<AuthScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
+        backgroundColor: Colors.redAccent,
       ),
     );
   }
@@ -89,183 +91,193 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            SizedBox(
-              width: 150,
-              height: 150,
-              child: Image.asset("assets/images/suit.png"),
-            ),
-            const SizedBox(height: 10),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: SizedBox(
-                width: 500, // Set the width explicitly
-                child: Image.asset(
-                  "assets/images/logo.jpg",
-                  fit: BoxFit.cover, // This can help fill the area
-                ),
-              ),
-            ),
-            const SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.only(left: 42.0, right: 30.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                width: size.width * 0.8,
-                height: size.height * 0.4,
-                child: Form(
-                  key: _form,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 15),
-                      Obx(() {
-                        // If the user is not logged in, show the Username TextFormField
-                        if (!_tailorController.isLogin.value) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: size.height * 0.12,
+                    child: Image.asset(
+                      "assets/images/logo.jpg",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    width: size.width * 0.9,
+                    child: Form(
+                      key: _form,
+                      child: Column(
+                        children: [
+                          Obx(() {
+                            if (!_tailorController.isLogin.value) {
+                              return Padding(
+                                padding:
+                                const EdgeInsets.symmetric(vertical: 10.0),
+                                child: TextFormField(
+                                  controller: usernameController,
+                                  decoration: InputDecoration(
+                                    hintText: "Username",
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 20),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.trim().isEmpty ||
+                                        value.length < 4) {
+                                      return 'Name must be at least 4 characters long.';
+                                    }
+                                  },
+                                  onSaved: (value) {
+                                    usernameController.text = value!;
+                                  },
+                                ),
+                              );
+                            } else {
+                              return const SizedBox(); // Empty widget when user is logged in (or some other UI element)
+                            }
+                          }),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: TextFormField(
-                              controller: usernameController,
+                              controller: emailController,
                               decoration: InputDecoration(
-                                hintText: "Username",
+                                hintText: "Email",
                                 filled: true,
-                                fillColor: Colors.white,
+                                fillColor: Colors.grey[200],
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide.none,
                                 ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 20),
                               ),
                               validator: (value) {
                                 if (value == null ||
                                     value.trim().isEmpty ||
-                                    value.length < 4) {
-                                  return 'Name must be at least 4 characters long.';
+                                    !value.contains("@")) {
+                                  return 'Invalid Email';
                                 }
                               },
                               onSaved: (value) {
-                                usernameController.text = value!;
+                                emailController.text = value!;
                               },
                             ),
-                          );
-                        } else {
-                          return const SizedBox(); // Empty widget when user is logged in (or some other UI element)
-                        }
-                      }),
-                      const SizedBox(height: 15),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: TextFormField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            hintText: "Email",
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide.none,
-                            ),
                           ),
-                          validator: (value) {
-                            if (value == null ||
-                                value.trim().isEmpty ||
-                                !value.contains("@gmail.com")) {
-                              return 'Invalid Email';
-                            }
-                          },
-                          onSaved: (value) {
-                            emailController.text = value!;
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Obx(() {
-                          return TextFormField(
-                            obscureText: !_tailorController.isVisible.value,
-                            controller: passwordController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Password',
-                              filled: true,
-                              fillColor: Colors.white,
-                              suffixIcon: IconButton(
-                                onPressed: _tailorController.passShow,
-                                icon: Icon(
-                                  _tailorController.isVisible.value
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
+                          Obx(() {
+                            return Padding(
+                              padding:
+                              const EdgeInsets.symmetric(vertical: 10.0),
+                              child: TextFormField(
+                                obscureText: !_tailorController.isVisible.value,
+                                controller: passwordController,
+                                decoration: InputDecoration(
+                                  hintText: 'Password',
+                                  filled: true,
+                                  fillColor: Colors.grey[200],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 20),
+                                  suffixIcon: IconButton(
+                                    onPressed: _tailorController.passShow,
+                                    icon: Icon(
+                                      _tailorController.isVisible.value
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Name must be at least 4 characters long.';
-                              }
-                            },
-                            onSaved: (value) {
-                              usernameController.text = value!;
-                            },
-                          );
-                        }),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 13, right: 13),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Obx(
-                              () => TextButton(
-                                onPressed: () {
-                                  _tailorController
-                                      .login(); // Call login method here
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return 'Password cannot be empty.';
+                                  }
                                 },
-                                child: Text(
-                                  _tailorController.isLogin.value
-                                      ? "Create Account"
-                                      : "Already Account",
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                              ),
-                            ),
-                            Obx(
-                              () => ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStateProperty.all(Colors.black),
-                                ),
-                                onPressed: () {
-                                  _submit();
+                                onSaved: (value) {
+                                  passwordController.text = value!;
                                 },
-                                child: Text(
-                                  _tailorController.isLogin.value
-                                      ? "Login"
-                                      : "Signup",
-                                  style: const TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Obx(
+                                    () => Expanded(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      _tailorController
+                                          .login(); // Toggle login/signup
+                                    },
+                                    child: Text(
+                                      _tailorController.isLogin.value
+                                          ? "Create Account"
+                                          : "Already Have an Account",
+                                      style: const TextStyle(
+                                          color: Colors.teal, fontSize: 15),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                              Obx(
+                                    () => Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.teal,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 30),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: _submit,
+                                    child: Text(
+                                      _tailorController.isLogin.value
+                                          ? "Login"
+                                          : "Signup",
+                                      style:
+                                      const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
