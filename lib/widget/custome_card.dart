@@ -8,7 +8,6 @@ class OrderCard extends StatelessWidget {
 
   final FirebaseModel model;
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,6 +74,20 @@ class OrderCard extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 15),
                           child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.teal,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            child: const Text("Edit",
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
@@ -87,7 +100,8 @@ class OrderCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                            child: const Text("View Order"),
+                            child: const Text("View Order",
+                                style: TextStyle(color: Colors.white)),
                           ),
                         ),
                       ],
