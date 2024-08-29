@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../constant/authentication_variable.dart';
 import '../constant/constant_controller.dart';
 import '../constant/constant_string.dart';
+
 class NewOrder extends StatefulWidget {
   const NewOrder({super.key});
   @override
@@ -162,7 +163,6 @@ class _NewOrderState extends State<NewOrder> {
         billNoController.clear();
 
         Navigator.pop(context);
-
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to save order: $error')),
@@ -183,7 +183,6 @@ class _NewOrderState extends State<NewOrder> {
   //   });
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,7 +190,8 @@ class _NewOrderState extends State<NewOrder> {
         centerTitle: true,
         title: const Text(
           "New Order",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
         backgroundColor: Colors.teal,
         elevation: 0,
@@ -349,7 +349,7 @@ class _NewOrderState extends State<NewOrder> {
           children: [
             Expanded(
               child:
-              myTextField(bayController, bay, bayFocusNode, kolarFocusNode),
+                  myTextField(bayController, bay, bayFocusNode, kolarFocusNode),
             ),
             Expanded(
               child: myTextField(

@@ -13,7 +13,6 @@ class HomePageScreen extends StatefulWidget {
   State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
-
 class _HomePageScreenState extends State<HomePageScreen> {
   void logout() {
     AuthenticationVar.firebase.signOut();
@@ -28,7 +27,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       appBar: AppBar(
         title: const Text(
           'Order Management',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.teal,

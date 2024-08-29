@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../constant/authentication_variable.dart';
 import '../model/firebase_model.dart';
 
@@ -11,7 +10,6 @@ class TailorController extends GetxController {
   late RxList<FirebaseModel> filteredOrders;
   RxBool isAuthentication = false.obs;
   late RxList<FirebaseModel> registeredOrder;
-
 
   @override
   void onInit() {
@@ -51,7 +49,6 @@ class TailorController extends GetxController {
       filteredOrders.assignAll(registeredOrder);
     });
   }
-
 
   void addOrder(FirebaseModel order) {
     registeredOrder.add(order);
