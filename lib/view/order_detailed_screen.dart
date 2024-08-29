@@ -6,6 +6,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   const OrderDetailsScreen({super.key, required this.model});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

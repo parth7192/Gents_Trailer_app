@@ -13,6 +13,7 @@ class HomePageScreen extends StatefulWidget {
   State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
+
 class _HomePageScreenState extends State<HomePageScreen> {
   void logout() {
     AuthenticationVar.firebase.signOut();

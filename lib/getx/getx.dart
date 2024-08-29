@@ -12,6 +12,7 @@ class TailorController extends GetxController {
   RxBool isAuthentication = false.obs;
   late RxList<FirebaseModel> registeredOrder;
 
+
   @override
   void onInit() {
     super.onInit();

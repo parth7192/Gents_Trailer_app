@@ -424,6 +424,7 @@ class _NewOrderState extends State<NewOrder> {
             ),
           ],
         ),
+
         // Expanded(
         //   child: Row(
         //     mainAxisAlignment: MainAxisAlignment.start,
