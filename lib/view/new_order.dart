@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../constant/authentication_variable.dart';
 import '../constant/constant_controller.dart';
@@ -7,6 +8,7 @@ import '../constant/constant_string.dart';
 
 class NewOrder extends StatefulWidget {
   const NewOrder({super.key});
+
   @override
   State<NewOrder> createState() => _NewOrderState();
 }
@@ -51,6 +53,21 @@ class _NewOrderState extends State<NewOrder> {
   //   mobileFocusNode.dispose();
   //   super.dispose();
   // }
+  DateTime? _selectedDate;
+  final formatter = DateFormat('d/M/yyyy');
+
+  void _presentDatePicker() async {
+    final now = DateTime.now();
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: now,
+      lastDate: DateTime(2050),
+    );
+    setState(() {
+      _selectedDate = pickedDate;
+    });
+  }
 
   void _submitData() async {
     final plength1 = double.tryParse(plengthController.text) ?? 0.0;
@@ -72,7 +89,8 @@ class _NewOrderState extends State<NewOrder> {
     final billNo = billNoController.text;
 
     // Check if any field is empty
-    if (plengthController.text.isEmpty ||
+    if (_selectedDate == null ||
+        plengthController.text.isEmpty ||
         name.isEmpty ||
         mobileNo.isEmpty ||
         billNo.isEmpty ||
@@ -120,6 +138,7 @@ class _NewOrderState extends State<NewOrder> {
             .doc(currentUser.email)
             .collection('orders')
             .add({
+          'deliveryDate': _selectedDate,
           'name': name,
           'mobileNo': mobileNo,
           'billNo': billNo,
@@ -169,19 +188,10 @@ class _NewOrderState extends State<NewOrder> {
         );
       }
     }
+    setState(() {
+      _selectedDate = null;
+    });
   }
-  // void _presentDatePicker() async {
-  //   final now = DateTime.now();
-  //   final pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: now,
-  //     firstDate: now,
-  //     lastDate: DateTime(2050),
-  //   );
-  //   setState(() {
-  //     _selectedDate = pickedDate;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -190,8 +200,7 @@ class _NewOrderState extends State<NewOrder> {
         centerTitle: true,
         title: const Text(
           "New Order",
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
         backgroundColor: Colors.teal,
         elevation: 0,
@@ -424,25 +433,37 @@ class _NewOrderState extends State<NewOrder> {
             ),
           ],
         ),
-
-        // Expanded(
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.start,
-        //     children: [
-        //       IconButton(
-        //         onPressed: _presentDatePicker,
-        //         icon: const Icon(
-        //           Icons.calendar_month,
-        //         ),
-        //       ),
-        //       Text(
-        //         _selectedDate == null
-        //             ? 'No date selected'
-        //             : formatter.format(_selectedDate!),
-        //       ),
-        //     ],
-        //   ),
-        // ),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: _presentDatePicker,
+                child: AbsorbPointer(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: _selectedDate == null
+                          ? 'Select Delivery Date'
+                          : formatter.format(_selectedDate!),
+                      labelStyle: const TextStyle(color: Colors.black),
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: const BorderSide(color: Colors.teal),
+                      ),
+                      suffixIcon:
+                          const Icon(Icons.calendar_today, color: Colors.teal),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

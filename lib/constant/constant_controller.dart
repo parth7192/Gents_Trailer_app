@@ -21,8 +21,6 @@ TextEditingController nameController = TextEditingController();
 TextEditingController mobileController = TextEditingController();
 TextEditingController billNoController = TextEditingController();
 
-
-
 final nameFocusNode = FocusNode();
 final mobileFocusNode = FocusNode();
 final billNoFocusNode = FocusNode();
@@ -40,4 +38,3 @@ final solderFocusNode = FocusNode();
 final bayFocusNode = FocusNode();
 final kolarFocusNode = FocusNode();
 final cupFocusNode = FocusNode();
-

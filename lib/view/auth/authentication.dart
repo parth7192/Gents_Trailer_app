@@ -33,7 +33,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (_tailorController.isLogin.value) {
         // For login
         final userCredentials =
-            await AuthenticationVar.firebase.signInWithEmailAndPassword(
+        await AuthenticationVar.firebase.signInWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
@@ -43,7 +43,7 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         // For signup
         final userCredentials =
-            await AuthenticationVar.firebase.createUserWithEmailAndPassword(
+        await AuthenticationVar.firebase.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
@@ -75,9 +75,6 @@ class _AuthScreenState extends State<AuthScreen> {
       }
       _tailorController.isAuthentication.value = false;
     }
-    emailController.clear();
-    passwordController.clear();
-    usernameController.clear();
   }
 
   void _showErrorSnackBar(BuildContext context, String message) {
@@ -102,9 +99,7 @@ class _AuthScreenState extends State<AuthScreen> {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 150),
                   SizedBox(
                     height: size.height * 0.12,
                     child: Image.asset(
@@ -136,7 +131,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             if (!_tailorController.isLogin.value) {
                               return Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10.0),
+                                const EdgeInsets.symmetric(vertical: 10.0),
                                 child: TextFormField(
                                   controller: usernameController,
                                   decoration: InputDecoration(
@@ -193,10 +188,11 @@ class _AuthScreenState extends State<AuthScreen> {
                               },
                             ),
                           ),
+
                           Obx(() {
                             return Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
+                              const EdgeInsets.symmetric(vertical: 10.0),
                               child: TextFormField(
                                 obscureText: !_tailorController.isVisible.value,
                                 controller: passwordController,
@@ -235,7 +231,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Obx(
-                                () => Expanded(
+                                    () => Expanded(
                                   child: TextButton(
                                     onPressed: () {
                                       _tailorController
@@ -252,7 +248,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                               ),
                               Obx(
-                                () => Expanded(
+                                    () => Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.teal,
@@ -268,7 +264,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                           ? "Login"
                                           : "Signup",
                                       style:
-                                          const TextStyle(color: Colors.white),
+                                      const TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ),

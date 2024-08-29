@@ -6,6 +6,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   const OrderDetailsScreen({super.key, required this.model});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,12 +56,12 @@ class OrderDetailsScreen extends StatelessWidget {
                       tableCell(model.billNo.toString()),
                     ],
                   ),
-                  // TableRow(
-                  //   children: [
-                  //     tableHeader("Date"),
-                  //     tableCell(model.date),
-                  //   ],
-                  // ),
+                  TableRow(
+                    children: [
+                      tableHeader("Date"),
+                      tableCell(model.deliveryDate.toString()),
+                    ],
+                  ),
                 ],
               ),
               const Divider(thickness: 2, height: 30),
@@ -82,44 +83,26 @@ class OrderDetailsScreen extends StatelessWidget {
                 children: [
                   TableRow(
                     children: [
-                      tableHeader("લંબાઈ"),
-                      tableCell(model.slength.toString()),
+                      tableHeader("Chest"),
+                      tableCell(""),
                     ],
                   ),
                   TableRow(
                     children: [
-                      tableHeader("ફ્રન્ટ"),
-                      tableCell(model.front.toString()),
+                      tableHeader("Length"),
+                      tableCell(""),
                     ],
                   ),
                   TableRow(
                     children: [
-                      tableHeader("છાતી"),
-                      tableCell(model.chhati.toString()),
+                      tableHeader("Sleeve"),
+                      tableCell(""),
                     ],
                   ),
                   TableRow(
                     children: [
-                      tableHeader("સોલ્ડર"),
-                      tableCell(model.solder.toString()),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      tableHeader("બાય"),
-                      tableCell(model.bay.toString()),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      tableHeader("કોલર"),
-                      tableCell(model.kolar.toString()),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      tableHeader("કપ"),
-                      tableCell(model.cup.toString()),
+                      tableHeader("Shoulder"),
+                      tableCell(""),
                     ],
                   ),
                 ],
@@ -144,44 +127,26 @@ class OrderDetailsScreen extends StatelessWidget {
                 children: [
                   TableRow(
                     children: [
-                      tableHeader("લંબાઈ"),
-                      tableCell(model.plength.toString()),
+                      tableHeader("Waist"),
+                      tableCell(""),
                     ],
                   ),
                   TableRow(
                     children: [
-                      tableHeader("કમર"),
-                      tableCell(model.kamar.toString()),
+                      tableHeader("Length"),
+                      tableCell(""),
                     ],
                   ),
                   TableRow(
                     children: [
-                      tableHeader("જોળો"),
-                      tableCell(model.jolo.toString()),
+                      tableHeader("Hip"),
+                      tableCell(""),
                     ],
                   ),
                   TableRow(
                     children: [
-                      tableHeader("સીટ"),
-                      tableCell(model.seat.toString()),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      tableHeader("જાંગ"),
-                      tableCell(model.jang.toString()),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      tableHeader("ઘૂંટણ"),
-                      tableCell(model.ghutan.toString()),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      tableHeader("મોળી"),
-                      tableCell(model.moli.toString()),
+                      tableHeader("Thigh"),
+                      tableCell(""),
                     ],
                   ),
                 ],
